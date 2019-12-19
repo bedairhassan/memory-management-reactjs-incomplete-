@@ -1,0 +1,5 @@
+display() {
+    console.log(this.state.processnumber)
+    console.log(this.state.processsize)
+    console.log(this.state.blocknumber)
+  }
