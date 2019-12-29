@@ -22,3 +22,7 @@ exports.nullablearrayitems = function(array){
 
   return false  
 }
+
+exports.getRandomInt = function(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
