@@ -1,4 +1,5 @@
 import React from 'react';
+import Q from './components/Q'
 
 export default class Welcome extends React.Component {
 
@@ -9,10 +10,10 @@ export default class Welcome extends React.Component {
     this.state = {
 
       data: [
-        { processnumber: 1, processsize: 212, blocknumber: 2 },
-        { processnumber: 2, processsize: 417, blocknumber: 5 },
-        { processnumber: 3, processsize: 112, blocknumber: 2 },
-        { processnumber: 4, processsize: 426, blocknumber: NaN }
+        { processnumber: 1, processsize: 212 },
+        { processnumber: 2, processsize: 417 },
+        { processnumber: 3, processsize: 112 },
+        { processnumber: 4, processsize: 426 }
       ],
     }
   }
@@ -23,17 +24,24 @@ export default class Welcome extends React.Component {
 
     let processsize = this.state.processsize
     let processnumber = this.state.processnumber
-    let blocknumber = this.state.blocknumber
 
-    const nullablearrayitems = require('./components/tools').nullablearrayitems([processnumber, processsize, blocknumber])
+    // validation
+    const nullablearrayitems = require('./components/tools').nullablearrayitems([processnumber, processsize])
 
     if (nullablearrayitems) {
       alert('failed to submit -> one or two empty fields.')
-      return  
+      return
+    }
+    // validation2
+    const seenbefore = require('./components/tools').seenbefore(this.acquireprocessnumber(), parseInt(processnumber))
+
+    if (seenbefore) {
+      alert(`${processnumber} already exists.`)
+      return;
     }
 
     this.setState({
-      data: [...this.state.data, { processsize, processnumber, blocknumber }
+      data: [...this.state.data, { processsize, processnumber}
       ]
     })
   }
@@ -52,7 +60,6 @@ export default class Welcome extends React.Component {
 
                   <th> processnumber </th>
                   <th> processsize </th>
-                  <th> blocknumber </th>
                 </tr>
               </thead>
               <tbody>
@@ -62,7 +69,6 @@ export default class Welcome extends React.Component {
                       <tr key={dat.processnumber}>
                         <td>{dat.processnumber}</td>
                         <td>{dat.processsize}</td>
-                        <td>{dat.blocknumber}</td>
 
                         <td><button onClick={() => this.delete(dat.processnumber)}>delete</button></td>
                       </tr>
@@ -71,27 +77,17 @@ export default class Welcome extends React.Component {
                 }
                 <tr>
                   <td><input onChange={(e) => {
-
-                    let processnumber = e.target.value
-
-                    const seenbefore = require('./components/tools').seenbefore(this.acquireprocessnumber(), parseInt(processnumber))
-
-                    console.log(seenbefore)
-
-                    if (seenbefore) {
-                      alert('already exists.')
-                      return;
-                    }
-
-                    this.setState({ processnumber: processnumber })
+                    this.setState({ processnumber: e.target.value })
                   }} /></td>
                   <td><input onChange={(e) => { this.setState({ processsize: e.target.value }) }} /></td>
-                  <td><input onChange={(e) => { this.setState({ blocknumber: e.target.value }) }} /></td>
+
                   <td><button onClick={() => { this.submit() }}>Submit</button></td>
                 </tr>
               </tbody>
 
             </table>
+
+            <Q />
 
           </center>
         </center>
