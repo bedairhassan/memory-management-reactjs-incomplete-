@@ -10,23 +10,23 @@ export default class Welcome extends React.Component {
     this.state = {
 
       data: [
-        { processnumber: 1, processsize: 212 },
-        { processnumber: 2, processsize: 417 },
-        { processnumber: 3, processsize: 112 },
-        { processnumber: 4, processsize: 426 }
-      ],
+        { processnumber: 1, processSize: 212, blockSize: 100 },
+        { processnumber: 2, processSize: 417, blockSize: 500 },
+        { processnumber: 3, processSize: 112, blockSize: 200 },
+        { processnumber: 4, processSize: 426, blockSize: 300 },
+        { processnumber: 4, processSize: 426, blockSize: 600 }
+      ]
     }
   }
 
-
-
   submit() {
 
-    let processsize = this.state.processsize
+    let processSize = this.state.processSize
     let processnumber = this.state.processnumber
+    let blockSize = this.state.blockSize
 
     // validation
-    const nullablearrayitems = require('./components/tools').nullablearrayitems([processnumber, processsize])
+    const nullablearrayitems = require('./components/tools').nullablearrayitems([processnumber, processSize])
 
     if (nullablearrayitems) {
       alert('failed to submit -> one or two empty fields.')
@@ -41,7 +41,7 @@ export default class Welcome extends React.Component {
     }
 
     this.setState({
-      data: [...this.state.data, { processsize, processnumber}
+      data: [...this.state.data, { processSize, processnumber,blockSize}
       ]
     })
   }
@@ -57,9 +57,9 @@ export default class Welcome extends React.Component {
             <table>
               <thead>
                 <tr>
-
                   <th> processnumber </th>
-                  <th> processsize </th>
+                  <th> processSize </th>
+                  <th> blockSize </th>
                 </tr>
               </thead>
               <tbody>
@@ -68,7 +68,8 @@ export default class Welcome extends React.Component {
                     dat =>
                       <tr key={dat.processnumber}>
                         <td>{dat.processnumber}</td>
-                        <td>{dat.processsize}</td>
+                        <td>{dat.processSize}</td>
+                        <td>{dat.blockSize}</td>
 
                         <td><button onClick={() => this.delete(dat.processnumber)}>delete</button></td>
                       </tr>
@@ -76,18 +77,19 @@ export default class Welcome extends React.Component {
                   )
                 }
                 <tr>
-                  <td><input onChange={(e) => {
-                    this.setState({ processnumber: e.target.value })
-                  }} /></td>
-                  <td><input onChange={(e) => { this.setState({ processsize: e.target.value }) }} /></td>
+                  <td><input onChange={(e) => {this.setState({ processnumber: e.target.value })}} /></td>
+                  <td><input onChange={(e) => { this.setState({ processSize: e.target.value }) }} /></td>
+                  <td><input onChange={(e) => { this.setState({ blockSize: e.target.value }) }} /></td>
 
                   <td><button onClick={() => { this.submit() }}>Submit</button></td>
+
                 </tr>
               </tbody>
 
             </table>
 
-            <Q />
+            <Q GR={this.state.data}/> 
+             {/* GR as given rect */}
 
           </center>
         </center>

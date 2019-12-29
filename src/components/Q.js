@@ -3,45 +3,64 @@ import Sketch from 'react-p5'
 
 export default class App extends Component {
 
-  setup = (p5, canvasParentRef) => {this.setuphank(p5, canvasParentRef)}
-  draw = p5 => {this.drawhank(p5)}
+    constructor(props) {
 
-  rects = []
-  type = ['freespace', 'occupied']
+        super(props)
 
-  setuphank(p5, canvasParentRef) {
-      
-    p5.createCanvas(400, 400).parent(canvasParentRef)
-    
-    this.rects[0] = { x: 30, y: 20 }
+        this.state = {
 
-    let processsize = 20 // height
-    for (let i = 1; i < 20; i++) {
-
-      this.rects[i] = {
-
-        x: this.rects[i - 1].x,
-        y: this.rects[i - 1].y + processsize,
-        type: this.type[require('./tools').getRandomInt(2)]
-      }
+            GIVEN: props.GR
+        }
     }
-  }
 
-  drawhank(p5) {
-    p5.background(220);
+    setup = (p5, canvasParentRef) => { this.setuphank(p5, canvasParentRef) }
+    draw = p5 => { this.drawhank(p5) }
 
-    for (let i = 0; i < this.rects.length; i++) {
+    //   rects = []
+    type = ['freespace', 'occupied']
 
-      let actual = this.rects[i].type === 'freespace' ? 'green' : 'red'
-      p5.fill(p5.color(actual)); // Use color variable 'c' as fill color
-      p5.noStroke(); // Don't draw a stroke around shapes
-
-      let processsize = 20 // HEIGHT
-      p5.rect(this.rects[i].x, this.rects[i].y, 100, processsize);
+    setuphank(p5, canvasParentRef) {
+        p5.createCanvas(400, 400).parent(canvasParentRef)
     }
-  }
 
-  render() {
-    return <Sketch setup={this.setup} draw={this.draw} />
-  }
+
+    drawhank(p5) {
+        p5.background(220);
+
+        let constantX = 30
+
+        p5.fill(p5.color('green'));
+        p5.noStroke();
+
+        // starting position 
+        let yold = 30
+        let heightold = this.state.GIVEN[0].processSize / 10
+
+        p5.rect(
+            constantX,
+            yold,
+            20,
+            heightold
+        );
+
+        for (let i = 1; i < this.state.GIVEN.length; i++) {
+           
+            yold=yold + heightold
+
+            heightold=this.state.GIVEN[i].processSize / 10  // for-next-iteration
+
+            // let type = this.type[require('./tools').getRandomInt(2)]
+            // let type = this.state.GIVEN[i].type
+
+            // let color = type==='freespace' ? 'green':'red'
+            p5.fill(p5.color('white'));
+
+            p5.noStroke();
+            p5.rect(constantX, yold, 20, heightold);
+        }
+    }
+
+    render() {
+        return <Sketch setup={this.setup} draw={this.draw} />
+    }
 }
