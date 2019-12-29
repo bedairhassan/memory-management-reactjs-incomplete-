@@ -14,60 +14,28 @@ export default class Welcome extends React.Component {
         { processnumber: 3, processsize: 112, blocknumber: 2 },
         { processnumber: 4, processsize: 426, blocknumber: NaN }
       ],
-
-      processnumber: 0,
-      processsize: 0,
-      blocknumber: 0
     }
   }
 
-  delete(id) {
 
-    console.log(`delete(), parameters ${id}`)
 
-    var filtered = []
+  submit() {
 
-    for (var k = 0; k < this.state.data.length; k++) {
-
-      if (!(this.state.data[k].processnumber === id)) {
-
-        filtered.push(this.state.data[k])
-      }
-    }
-
-    this.setState({ data: [...filtered] })
-  }
-
-  existBefore(id){
-
-    for(let i=0;i<this.state.data.length;i++){
-
-      if(this.state.data[i].processnumber===id){
-    
-        alert(`illegal id : ${id}`)
-        return true;
-      }
-    }
-  }
-
-  submit(){
-
-    let processnumber = this.state.processnumber
     let processsize = this.state.processsize
+    let processnumber = this.state.processnumber
     let blocknumber = this.state.blocknumber
 
-    // validation
-    if(this.existBefore(processnumber)){return;}
-    if (require('./components/tools').nullable([processnumber,processsize,blocknumber])){return;}
-    if (require('./components/tools').IsLetter([processnumber,processsize,blocknumber])){return;}
+    const nullablearrayitems = require('./components/tools').nullablearrayitems([processnumber, processsize, blocknumber])
 
-    let given = {
-      processsize,
-      processnumber,
-      blocknumber
+    if (nullablearrayitems) {
+      alert('failed to submit -> one or two empty fields.')
+      return  
     }
 
-    this.setState({data:[...this.state.data,given]})
+    this.setState({
+      data: [...this.state.data, { processsize, processnumber, blocknumber }
+      ]
+    })
   }
 
   render() {
@@ -102,10 +70,24 @@ export default class Welcome extends React.Component {
                   )
                 }
                 <tr>
-                  <td><input onChange={(e) => { this.setState({ processnumber: e.target.value }) }} /></td>
+                  <td><input onChange={(e) => {
+
+                    let processnumber = e.target.value
+
+                    const seenbefore = require('./components/tools').seenbefore(this.acquireprocessnumber(), parseInt(processnumber))
+
+                    console.log(seenbefore)
+
+                    if (seenbefore) {
+                      alert('already exists.')
+                      return;
+                    }
+
+                    this.setState({ processnumber: processnumber })
+                  }} /></td>
                   <td><input onChange={(e) => { this.setState({ processsize: e.target.value }) }} /></td>
                   <td><input onChange={(e) => { this.setState({ blocknumber: e.target.value }) }} /></td>
-                  <td><button onClick={() => {this.submit()}}>Submit</button></td>
+                  <td><button onClick={() => { this.submit() }}>Submit</button></td>
                 </tr>
               </tbody>
 
@@ -115,6 +97,34 @@ export default class Welcome extends React.Component {
         </center>
       </div>
     )
+  }
+
+  delete(id) {
+
+    console.log(`delete(), parameters ${id}`)
+
+    var filtered = []
+
+    for (var k = 0; k < this.state.data.length; k++) {
+
+      if (!(this.state.data[k].processnumber === id)) {
+
+        filtered.push(this.state.data[k])
+      }
+    }
+
+    this.setState({ data: [...filtered] })
+  }
+
+  acquireprocessnumber() {
+
+    let pnumbers = []
+
+    for (let i = 0; i < this.state.data.length; i++) {
+      pnumbers.push(this.state.data[i].processnumber)
+    }
+
+    return pnumbers
   }
 }
 

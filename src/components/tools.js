@@ -1,43 +1,24 @@
-function IsLetter(array){ // for exporting
+exports.seenbefore = function (array,guest){
 
-    let found = (array,guest)=>{
+  for (let i=0;i<array.length;i++){
 
-      // [0,1,2,3,4,5,6,7,8,9] , 'q' -> returns false
-      // [0,1,2,3,4,5,6,7,8,9] , '1' -> returns true
-      // [0,1,2,3,4,5,6,7,8,9] , 1 -> returns true
+    if (array[i]===guest){
 
-      for (let i=0;i<array.length;i++){
-
-        if(array[i]===parseInt(guest)){
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    let values = [0,1,2,3,4,5,6,7,8,9]
-
-    for (let i=0;i<array.length;i++){
-
-      if(found(values,array[i])===false){
-        return true;
-      }
+      return true
     }
   }
 
-  function nullable(array){ // for exporting
+  return false
+}
 
-    for(let i=0;i<array.length;i++){
+exports.nullablearrayitems = function(array){
 
-      if(array[i]===null || array[i]==='')
-      {
-        return true;
-      }
+  for (let i=0;i<array.length;i++){
+
+    if(array[i]==='' || array[i]===undefined || parseInt(array[i])===0){
+      return true
     }
-
-    return false
   }
 
-  exports.IsLetter = IsLetter
-  exports.nullable=nullable
+  return false  
+}
