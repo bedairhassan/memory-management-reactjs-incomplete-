@@ -1,17 +1,17 @@
-let firstFit = (blockSize, processSize) => {
+const firstFit = (blockSize, processSize) => {
 
     // int []allocation = new int[n]; 
     var allocation = []
 
     // Initially no block is assigned to any process 
-    for (var i = 0; i < allocation.length; i++)
+    for (let i = 0; i < allocation.length; i++)
         allocation[i] = -1;
 
     // pick each process and find suitable blocks 
     // according to its size ad assign to it 
-    for (var i = 0; i < processSize.length; i++)
+    for (let i = 0; i < processSize.length; i++)
     {
-        for (var j = 0; j < blockSize.length; j++)
+        for (let j = 0; j < blockSize.length; j++)
         {
             if (blockSize[j] >= processSize[i]) {
                 // allocate block j to p[i] process 
@@ -39,7 +39,7 @@ let displayString = (allocation,processSize)=>{
     {        
         string+=`${i+1}\t\t${processSize[i]}\t\t`
 
-        if (allocation[i] != -1)
+        if (allocation[i] !== -1)
             string+=`${allocation[i] + 1}`
         else
             string+=`Not Allocated`
@@ -61,7 +61,7 @@ let displayObject2 = (allocation,processSize)=>{
         objects.push({
 
             processnumber:i+1,
-            processsize:processSize[i],
+            processSize:processSize[i],
             // blocknumber:allocation[i] != -1?allocation[i]+1:NaN
         })
     }
@@ -69,23 +69,24 @@ let displayObject2 = (allocation,processSize)=>{
     return objects
 }
 
-let displayObject = (allocation,processSize)=>{
 
-    //let string = '\nProcess No.\tProcess Size\tBlock no.\n'
-    let objects = []
+// let displayObject = (allocation,processSize)=>{
 
-    for (let i = 0; i < processSize.length; i++)
-    {        
-        objects.push({
+//     //let string = '\nProcess No.\tProcess Size\tBlock no.\n'
+//     let objects = []
 
-            processnumber:i+1,
-            processsize:processSize[i],
-            blocknumber:allocation[i] != -1?allocation[i]+1:NaN
-        })
-    }
+//     for (let i = 0; i < processSize.length; i++)
+//     {        
+//         objects.push({
 
-    return objects
-}
+//             processnumber:i+1,
+//             processsize:processSize[i],
+//             blocknumber:allocation[i] !== -1?allocation[i]+1:NaN
+//         })
+//     }
+
+//     return objects
+// }
 
 let main = ()=>{
 
@@ -97,17 +98,17 @@ let main = ()=>{
     console.log(str)
 }
 
-let main2=()=>{
+// let main2=()=>{
 
-    // IN'S
-    var blockSize = [ 100, 500, 200, 300, 600];
-    var processSize = [ 212, 417, 112, 426]
+//     // IN'S
+//     var blockSize = [ 100, 500, 200, 300, 600];
+//     var processSize = [ 212, 417, 112, 426]
 
-    // OUT'S
-    var[allocation2,processsize2]=firstFit(blockSize,processSize);
-    let objects = displayObject(allocation2,processsize2)
-    console.log(objects)
-}
+//     // OUT'S
+//     var[allocation2,processsize2]=firstFit(blockSize,processSize);
+//     let objects = displayObject(allocation2,processsize2)
+//     console.log(objects)
+// }
 
 let main3=()=>{
 
@@ -121,9 +122,10 @@ let main3=()=>{
     console.log(objects)
 }
 
-main()
+// main()
 //main2() // displays processnumber, processsize, blocknumber
-main3()// displays processnumber, processsize, ~NO BLOCK NUMBER
+// main3()// displays processnumber, processsize, ~NO BLOCK NUMBER
 
 
-// This code is contributed by nitin mittal. 
+exports.firstFit=firstFit
+exports.displayObject2=displayObject2
